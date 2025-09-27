@@ -1,0 +1,56 @@
+\documentclass[aspectratio=169,12pt,xcolor=dvipsnames]{beamer}
+\usepackage{graphicx} % For including graphics.
+\usepackage{hyperref} % For links.
+\usepackage{multirow}
+\usepackage{minted}
+
+\title{Computer Graphics with Clojure, LWJGL, and Fastmath}
+\author{Jan Wedekind}
+\date{Saturday, October 18th 2025}
+
+\hypersetup{
+   pdftitle          = {Computer Graphics with Clojure, LWJGL, and Fastmath},
+   pdfsubject        = {rendering NASA CGI Moon Kit data using Clojure, LWJGL, and Fastmath},
+   pdfauthor         = {Jan Wedekind},
+   pdfkeywords       = {Clojure, LWJGL, Fastmath, rendering, NASA, Moon, graphics},
+   pdfcreator        = {LaTeX with Beamer class},
+   pdfproducer       = {TeX Live 2025/dev/Debian},
+   bookmarksopen     = false,
+   bookmarksnumbered = true,
+   colorlinks        = true,
+}
+
+\usebackgroundtemplate{\includegraphics[width=\paperwidth,height=\paperheight]{slide}}
+
+\usecolortheme{seahorse}
+
+\definecolor{slidecolor}{rgb}{0.65,0.71,0.72}
+\setbeamercolor{titlelike}{fg=black,bg=slidecolor!60}
+\setbeamercolor{frametitle}{fg=black,bg=slidecolor!100}
+
+\begin{document}
+
+\begin{frame}
+  \pdfbookmark[1]{Computer Graphics with Clojure, LWJGL, and Fastmath}{title}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \pdfbookmark[1]{motivation}{motivation}
+  \frametitle{motivation}
+  \begin{itemize}
+    \item metric for software design
+    \item theoretical foundation for software engineering
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \pdfbookmark[1]{questions}{questions}
+  \begin{center}
+    \begin{huge}
+      Thanks for listening!
+    \end{huge}
+  \end{center}
+\end{frame}
+
+\end{document}
