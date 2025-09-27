@@ -1,4 +1,7 @@
 # Computer Graphics with Clojure, LWJGL, and Fastmath
+
+*Upcoming talk at Macroexpand-Noj, October 17-18, 2025*
+
 ## Abstract
 sfsim is a space flight simulator under development.
 It makes use of Clojure, LWJGL, and Fastmath among other libraries.
