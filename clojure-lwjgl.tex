@@ -198,9 +198,9 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \pdfbookmark[1]{Rendering}{rendering}
-  \pdfbookmark[2]{Dependencies}{renderingdeps}
-  \frametitle{Rendering - Dependencies}
+  \pdfbookmark[1]{Plain Window}{plainwindow}
+  \pdfbookmark[2]{Dependencies}{plainwindowdeps}
+  \frametitle{Plain Window - Dependencies}
   Using the following \texttt{deps.edn} (replace linux with windows or macos as appropriate):
   \begin{minted}[]{clj}
 {:deps {org.clojure/clojure {:mvn/version "1.12.2"}
@@ -215,6 +215,26 @@
         org.lwjgl/lwjgl-stb {:mvn/version "3.3.6"}
         org.lwjgl/lwjgl-stb$natives-linux {:mvn/version "3.3.6"}}
  :paths ["."]}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Create}{plainwindowcreate}
+  Initialise GLFW library and create a window with OpenGL context:
+  \frametitle{Plain Window - Create}
+  \begin{minted}[]{clj}
+(GLFW/glfwInit)
+
+(def window-width 1280)
+(def window-height 720)
+
+(GLFW/glfwDefaultWindowHints)
+(def window
+     (GLFW/glfwCreateWindow window-width window-height "example" 0 0))
+
+(GLFW/glfwShowWindow window)
+(GLFW/glfwMakeContextCurrent window)
+(GL/createCapabilities)
   \end{minted}
 \end{frame}
 
