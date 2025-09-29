@@ -202,6 +202,9 @@
   \frametitle{Plain Window - Create}
   Initialise GLFW library and create a window with OpenGL context:
   \begin{minted}[]{clj}
+(import '[org.lwjgl.glfw GLFW]
+        '[org.lwjgl.opengl GL GL11])
+
 (GLFW/glfwInit)
 
 (def window-width 1280)

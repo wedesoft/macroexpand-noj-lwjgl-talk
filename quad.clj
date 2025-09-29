@@ -7,7 +7,7 @@
 (def window-height 720)
 
 (GLFW/glfwDefaultWindowHints)
-(def window (GLFW/glfwCreateWindow window-width window-height "example" 0 0))
+(def window (GLFW/glfwCreateWindow window-width window-height "quad" 0 0))
 
 (GLFW/glfwShowWindow window)
 (GLFW/glfwMakeContextCurrent window)
