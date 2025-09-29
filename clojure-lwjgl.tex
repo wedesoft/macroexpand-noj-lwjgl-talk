@@ -263,6 +263,40 @@
   \end{minted}
 \end{frame}
 
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Vertex Shader}{quadvertex}
+  \frametitle{Single Quad {-} Vertex Shader}
+  \begin{minted}[]{clj}
+(def vertex-source "
+#version 130
+
+in vec3 point;
+
+void main()
+{
+  gl_Position = vec4(point, 1);
+}")
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Fragment Shader}{quadvertex}
+  \frametitle{Single Quad {-} Fragment Shader}
+  \begin{minted}[]{clj}
+(def fragment-source "
+#version 130
+
+uniform vec2 iResolution;
+out vec4 fragColor;
+
+void main()
+{
+  vec2 uv = gl_FragCoord.xy / iResolution.xy;
+  fragColor = vec4(uv, 0, 1);
+}")
+  \end{minted}
+\end{frame}
+
 \begin{frame}
   \pdfbookmark[1]{questions}{questions}
   \begin{center}
