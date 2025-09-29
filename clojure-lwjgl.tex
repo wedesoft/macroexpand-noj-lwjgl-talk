@@ -314,6 +314,24 @@ void main()
   \end{minted}
 \end{frame}
 
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Linking Shader Program}{quadcompile}
+  \frametitle{Single Quad {-} Linking Shader Program}
+  \begin{minted}[]{clj}
+(defn make-program [& shaders]
+  (let [program (GL20/glCreateProgram)]
+    (doseq [shader shaders]
+           (GL20/glAttachShader program shader)
+           (GL20/glDeleteShader shader))
+    (GL20/glLinkProgram program)
+    (when (zero? (GL20/glGetProgrami program GL20/GL_LINK_STATUS))
+      (throw (Exception. (GL20/glGetProgramInfoLog program 1024))))
+    program))
+
+(def program (make-program vertex-shader fragment-shader))
+  \end{minted}
+\end{frame}
+
 \begin{frame}
   \pdfbookmark[1]{questions}{questions}
   \begin{center}

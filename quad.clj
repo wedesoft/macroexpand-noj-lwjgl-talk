@@ -44,8 +44,20 @@ void main()
       (throw (Exception. (GL20/glGetShaderInfoLog shader 1024))))
     shader))
 
+(defn make-program [& shaders]
+  (let [program (GL20/glCreateProgram)]
+    (doseq [shader shaders]
+           (GL20/glAttachShader program shader)
+           (GL20/glDeleteShader shader))
+    (GL20/glLinkProgram program)
+    (when (zero? (GL20/glGetProgrami program GL20/GL_LINK_STATUS))
+      (throw (Exception. (GL20/glGetProgramInfoLog program 1024))))
+    program))
+
 (def vertex-shader (make-shader vertex-source GL20/GL_VERTEX_SHADER))
 (def fragment-shader (make-shader fragment-source GL20/GL_FRAGMENT_SHADER))
+(def program (make-program vertex-shader fragment-shader))
+
 (while (not (GLFW/glfwWindowShouldClose window))
        (GL11/glClearColor 0.0 1.0 0.0 1.0)
        (GL11/glClear GL11/GL_COLOR_BUFFER_BIT)
