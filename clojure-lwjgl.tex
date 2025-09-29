@@ -297,6 +297,23 @@ void main()
   \end{minted}
 \end{frame}
 
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Compiling Shaders}{quadcompile}
+  \frametitle{Single Quad {-} Compiling Shaders}
+  \begin{minted}[]{clj}
+(defn make-shader [source shader-type]
+  (let [shader (GL20/glCreateShader shader-type)]
+    (GL20/glShaderSource shader source)
+    (GL20/glCompileShader shader)
+    (when (zero? (GL20/glGetShaderi shader GL20/GL_COMPILE_STATUS))
+      (throw (Exception. (GL20/glGetShaderInfoLog shader 1024))))
+    shader))
+
+(def vertex-shader (make-shader vertex-source GL20/GL_VERTEX_SHADER))
+(def fragment-shader (make-shader fragment-source GL20/GL_FRAGMENT_SHADER))
+  \end{minted}
+\end{frame}
+
 \begin{frame}
   \pdfbookmark[1]{questions}{questions}
   \begin{center}
