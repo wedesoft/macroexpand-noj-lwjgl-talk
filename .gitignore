@@ -1,5 +1,6 @@
+.cpcache
 clojure-lwjgl.pdf
-_minted-opengl
+_minted
 *.aux
 *.log
 *.out
