@@ -58,12 +58,65 @@ void main()
 (def fragment-shader (make-shader fragment-source GL20/GL_FRAGMENT_SHADER))
 (def program (make-program vertex-shader fragment-shader))
 
+(def vertices
+  (float-array [ 0.8  0.8 0.0
+                -0.8  0.8 0.0
+                -0.8 -0.8 0.0
+                 0.8 -0.8 0.0]))
+
+(def indices
+  (int-array [0 1 2 3]))
+
+(defmacro def-make-buffer [method create-buffer]
+  `(defn ~method [data#]
+     (let [buffer# (~create-buffer (count data#))]
+       (.put buffer# data#)
+       (.flip buffer#)
+       buffer#)))
+
+(def-make-buffer make-float-buffer BufferUtils/createFloatBuffer)
+(def-make-buffer make-int-buffer BufferUtils/createIntBuffer)
+
+(defn setup-vao [vertices indices]
+  (let [vao (GL30/glGenVertexArrays)
+        vbo (GL15/glGenBuffers)
+        ibo (GL15/glGenBuffers)]
+    (GL30/glBindVertexArray vao)
+    (GL15/glBindBuffer GL15/GL_ARRAY_BUFFER vbo)
+    (GL15/glBufferData GL15/GL_ARRAY_BUFFER (make-float-buffer vertices)
+                       GL15/GL_STATIC_DRAW)
+    (GL15/glBindBuffer GL15/GL_ELEMENT_ARRAY_BUFFER ibo)
+    (GL15/glBufferData GL15/GL_ELEMENT_ARRAY_BUFFER (make-int-buffer indices)
+                       GL15/GL_STATIC_DRAW)
+    {:vao vao :vbo vbo :ibo ibo}))
+
+(def vao (setup-vao vertices indices))
+
+(def point (GL20/glGetAttribLocation program "point"))
+(GL20/glVertexAttribPointer point 3 GL11/GL_FLOAT false (* 3 Float/BYTES) (* 0 Float/BYTES))
+(GL20/glEnableVertexAttribArray point)
+
+(GL20/glUseProgram program)
+(GL20/glUniform2f (GL20/glGetUniformLocation program "iResolution") window-width window-height)
+
 (while (not (GLFW/glfwWindowShouldClose window))
-       (GL11/glClearColor 0.0 1.0 0.0 1.0)
+       (GL11/glClearColor 0.0 0.0 0.0 1.0)
        (GL11/glClear GL11/GL_COLOR_BUFFER_BIT)
+       (GL11/glDrawElements GL11/GL_QUADS (count indices) GL11/GL_UNSIGNED_INT 0)
        (GLFW/glfwSwapBuffers window)
        (GLFW/glfwPollEvents))
 
+(defn teardown-vao [{:keys [vao vbo ibo]}]
+  (GL15/glBindBuffer GL15/GL_ELEMENT_ARRAY_BUFFER 0)
+  (GL15/glDeleteBuffers ibo)
+  (GL15/glBindBuffer GL15/GL_ARRAY_BUFFER 0)
+  (GL15/glDeleteBuffers vbo)
+  (GL30/glBindVertexArray 0)
+  (GL15/glDeleteBuffers vao))
+
+(teardown-vao vao)
+
+(GL20/glDeleteProgram program)
+
 (GLFW/glfwDestroyWindow window)
-(GLFW/glfwInit)
 (GLFW/glfwTerminate)

@@ -20,5 +20,4 @@
        (GLFW/glfwPollEvents))
 
 (GLFW/glfwDestroyWindow window)
-(GLFW/glfwInit)
 (GLFW/glfwTerminate)
