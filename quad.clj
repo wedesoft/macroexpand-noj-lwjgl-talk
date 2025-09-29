@@ -1,5 +1,6 @@
 (import '[org.lwjgl.glfw GLFW]
-        '[org.lwjgl.opengl GL GL11])
+        '[org.lwjgl.opengl GL GL11 GL15 GL20 GL30]
+        '[org.lwjgl BufferUtils])
 
 (GLFW/glfwInit)
 

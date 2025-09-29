@@ -179,7 +179,7 @@
 \begin{frame}[fragile]
   \pdfbookmark[1]{Plain Window}{plainwindow}
   \pdfbookmark[2]{Dependencies}{plainwindowdeps}
-  \frametitle{Plain Window - Dependencies}
+  \frametitle{Plain Window {-} Dependencies}
   Using the following \texttt{deps.edn} (replace linux with windows or macos as appropriate):
   \begin{minted}[]{clj}
 {:deps {org.clojure/clojure {:mvn/version "1.12.2"}
@@ -199,7 +199,7 @@
 
 \begin{frame}[fragile]
   \pdfbookmark[2]{Create}{plainwindowcreate}
-  \frametitle{Plain Window - Create}
+  \frametitle{Plain Window {-} Create}
   Initialise GLFW library and create a window with OpenGL context:
   \begin{minted}[]{clj}
 (import '[org.lwjgl.glfw GLFW]
@@ -222,7 +222,7 @@
 
 \begin{frame}[fragile]
   \pdfbookmark[2]{Event Loop}{plainwindowloop}
-  \frametitle{Plain Window - Event Loop}
+  \frametitle{Plain Window {-} Event Loop}
   Run event loop as follows:
   \begin{minted}[]{clj}
 (while (not (GLFW/glfwWindowShouldClose window))
@@ -235,7 +235,7 @@
 
 \begin{frame}[fragile]
   \pdfbookmark[2]{Terminate}{plainwindowterminate}
-  \frametitle{Plain Window - Terminate}
+  \frametitle{Plain Window {-} Terminate}
   Terminate the program like this:
   \begin{minted}[]{clj}
 (GLFW/glfwDestroyWindow window)
@@ -246,10 +246,21 @@
 
 \begin{frame}
   \pdfbookmark[2]{Result}{plainwindowresult}
-  \frametitle{Plain Window - Result}
+  \frametitle{Plain Window {-} Result}
   \begin{center}
     \includegraphics[width=.8\textwidth]{window}
   \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[1]{Single Quad}{quad}
+  \pdfbookmark[2]{Import}{quadimport}
+  \frametitle{Single Quad {-} Import}
+  \begin{minted}[]{clj}
+(import '[org.lwjgl.glfw GLFW]
+        '[org.lwjgl.opengl GL GL11 GL15 GL20 GL30]
+        '[org.lwjgl BufferUtils])
+  \end{minted}
 \end{frame}
 
 \begin{frame}
