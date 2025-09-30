@@ -26,16 +26,27 @@ void main()
   gl_Position = vec4(point, 1);
 }")
 
+(def color-source "
+#version 130
+
+uniform sampler2D moon;
+
+vec3 color(vec2 uv)
+{
+  return texture(moon, uv).rgb;
+}")
+
 (def fragment-source "
 #version 130
 
 uniform vec2 iResolution;
-uniform sampler2D moon;
 out vec4 fragColor;
 
+vec3 color(vec2 uv);
+
 void main()
-{ 
-  fragColor = texture(moon, gl_FragCoord.xy / iResolution.xy);
+{
+  fragColor = vec4(color(gl_FragCoord.xy / iResolution.xy), 1.0);
 }")
 
 (defn make-shader [source shader-type]
@@ -57,8 +68,9 @@ void main()
     program))
 
 (def vertex-shader (make-shader vertex-source GL20/GL_VERTEX_SHADER))
+(def color-shader (make-shader color-source GL20/GL_FRAGMENT_SHADER))
 (def fragment-shader (make-shader fragment-source GL20/GL_FRAGMENT_SHADER))
-(def program (make-program vertex-shader fragment-shader))
+(def program (make-program vertex-shader color-shader fragment-shader))
 
 (def vertices
   (float-array [ 1.0  1.0 0.0

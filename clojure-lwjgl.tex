@@ -505,17 +505,33 @@ void main()
 
 \begin{frame}[fragile]
   \pdfbookmark[2]{Fragment Shader}{texturefragment}
-  \frametitle{Texture {-} Fragment Shader}
+  \frametitle{Texture {-} Fragment Shader 1/2}
+  \begin{minted}[]{glsl}
+#version 130
+
+uniform sampler2D moon;
+
+vec3 color(vec2 uv)
+{
+  return texture(moon, uv).rgb;
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Fragment Shader}{texturefragment}
+  \frametitle{Texture {-} Fragment Shader 2/2}
   \begin{minted}[]{glsl}
 #version 130
 
 uniform vec2 iResolution;
-uniform sampler2D moon;
 out vec4 fragColor;
+
+vec3 color(vec2 uv);
 
 void main()
 {
-  fragColor = texture(moon, gl_FragCoord.xy / iResolution.xy);
+  fragColor = vec4(color(gl_FragCoord.xy / iResolution.xy), 1.0);
 }
   \end{minted}
 \end{frame}
@@ -618,7 +634,7 @@ void main()
 
 \begin{frame}[fragile]
   \pdfbookmark[2]{Fragment Shader}{cubefragment}
-  \frametitle{Cube {-} Fragment Shader 1/3}
+  \frametitle{Cube {-} Fragment Shader 1/2}
   \begin{minted}[]{glsl}
 #version 130
 
@@ -634,21 +650,7 @@ vec2 uv(vec3 p)
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Cube {-} Fragment Shader 2/3}
-  \begin{minted}[]{glsl}
-#version 130
-
-uniform sampler2D moon;
-
-vec3 color(vec2 uv)
-{
-  return texture(moon, uv).rgb;
-}
-  \end{minted}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Cube {-} Fragment Shader 3/3}
+  \frametitle{Cube {-} Fragment Shader 2/2}
   \begin{minted}[]{glsl}
 #version 130
 
