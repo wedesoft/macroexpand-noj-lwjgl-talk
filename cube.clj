@@ -181,7 +181,6 @@ void main()
 (def color-channels (.getNumBands color-raster))
 (def color-pixels (int-array (* color-width color-height color-channels)))
 (.getPixels color-raster 0 0 color-width color-height color-pixels)
-[color-width color-height color-channels]
 
 (def texture-color (GL11/glGenTextures))
 (GL11/glBindTexture GL11/GL_TEXTURE_2D texture-color)
