@@ -37,23 +37,59 @@
 (def vertex-source "
 #version 130
 
+#define M_PI 3.1415926535897932384626433832795
+
+uniform float fov;
+uniform float distance;
+uniform vec2 iResolution;
+uniform vec2 iMouse;
 in vec3 point;
+out vec3 vpoint;
 
 void main()
 {
-  gl_Position = vec4(point, 1);
+  float alpha = iMouse.x / iResolution.x * M_PI * 2.0 + M_PI;
+  float beta = (iMouse.y / iResolution.y - 0.5) * M_PI * 2.0;
+  mat3 rot_y = mat3(vec3(cos(alpha), 0, sin(alpha)),
+                    vec3(0, 1, 0),
+                    vec3(-sin(alpha), 0, cos(alpha)));
+  mat3 rot_x = mat3(vec3(1, 0, 0),
+                    vec3(0, cos(beta), -sin(beta)),
+                    vec3(0, sin(beta), cos(beta)));
+  vec3 p = rot_x * rot_y * point + vec3(0, 0, distance);
+  float f = 1.0 / tan(fov / 2.0);
+  float aspect = iResolution.x / iResolution.y;
+  float proj_x = p.x / p.z * f;
+  float proj_y = p.y / p.z * f * aspect;
+  float proj_z = p.z / (2.0 * distance);
+  gl_Position = vec4(proj_x, proj_y, proj_z, 1);
+  vpoint = point;
 }")
 
 (def fragment-source "
 #version 130
 
-uniform vec2 iResolution;
+#define PI 3.1415926535897932384626433832795
+
 uniform sampler2D moon;
+in vec3 vpoint;
 out vec4 fragColor;
 
+vec2 uv(vec3 p)
+{
+  float lon = atan(p.x, -p.z) / (2.0 * PI) + 0.5;
+  float lat = 0.5 - atan(p.y, length(p.xz)) / PI;
+  return vec2(lon, lat);
+}
+
+vec3 color(vec2 uv)
+{
+  return texture(moon, uv).rgb;
+}
+
 void main()
-{ 
-  fragColor = texture(moon, gl_FragCoord.xy / iResolution.xy);
+{
+  fragColor = vec4(color(uv(vpoint)), 1);
 }")
 
 (defn make-shader [source shader-type]
@@ -79,13 +115,22 @@ void main()
 (def program (make-program vertex-shader fragment-shader))
 
 (def vertices
-  (float-array [ 1.0  1.0 0.0
-                -1.0  1.0 0.0
-                -1.0 -1.0 0.0
-                 1.0 -1.0 0.0]))
+  (float-array [-1.0 -1.0 -1.0
+                 1.0 -1.0 -1.0
+                -1.0  1.0 -1.0
+                 1.0  1.0 -1.0
+                -1.0 -1.0  1.0
+                 1.0 -1.0  1.0
+                -1.0  1.0  1.0
+                 1.0  1.0  1.0]))
 
 (def indices
-  (int-array [0 1 2 3]))
+  (int-array [0 1 3 2
+              6 7 5 4
+              0 2 6 4
+              5 7 3 1
+              2 3 7 6
+              4 5 1 0]))
 
 (defmacro def-make-buffer [method create-buffer]
   `(defn ~method [data#]
@@ -139,11 +184,18 @@ void main()
 
 (GL20/glUseProgram program)
 (GL20/glUniform2f (GL20/glGetUniformLocation program "iResolution") window-width window-height)
+(GL20/glUniform1f (GL20/glGetUniformLocation program "fov") (to-radians 35.0))
+(GL20/glUniform1f (GL20/glGetUniformLocation program "distance") 10.0)
 (GL20/glUniform1i (GL20/glGetUniformLocation program "moon") 0)
 (GL13/glActiveTexture GL13/GL_TEXTURE0)
 (GL11/glBindTexture GL11/GL_TEXTURE_2D texture-color)
 
+(GL11/glEnable GL11/GL_CULL_FACE)
+(GL11/glCullFace GL11/GL_BACK)
+
 (while (not (GLFW/glfwWindowShouldClose window))
+       (when @mouse-button
+         (GL20/glUniform2f (GL20/glGetUniformLocation program "iMouse") (@mouse-pos 0) (@mouse-pos 1)))
        (GL11/glClearColor 0.0 0.0 0.0 1.0)
        (GL11/glClear GL11/GL_COLOR_BUFFER_BIT)
        (GL11/glDrawElements GL11/GL_QUADS (count indices) GL11/GL_UNSIGNED_INT 0)

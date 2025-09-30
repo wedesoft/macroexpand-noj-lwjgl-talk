@@ -269,12 +269,19 @@
   \pdfbookmark[1]{Single Quad}{quad}
   \pdfbookmark[2]{Vertex Shader}{quadvertex}
   \frametitle{Single Quad {-} Vertex Shader}
+  \begin{minted}[]{glsl}
+#version 130
+in vec3 point;
+void main()
+{
+  gl_Position = vec4(point, 1);
+}
+  \end{minted}
+  \rule{\textwidth}{1pt}
   \begin{minted}[]{clj}
 (def vertex-source "
 #version 130
-
 in vec3 point;
-
 void main()
 {
   gl_Position = vec4(point, 1);
@@ -285,18 +292,24 @@ void main()
 \begin{frame}[fragile]
   \pdfbookmark[2]{Fragment Shader}{quadfragment}
   \frametitle{Single Quad {-} Fragment Shader}
-  \begin{minted}[]{clj}
-(def fragment-source "
+  \begin{minted}[]{glsl}
 #version 130
-
 uniform vec2 iResolution;
 out vec4 fragColor;
-
 void main()
 {
   vec2 uv = gl_FragCoord.xy / iResolution.xy;
   fragColor = vec4(uv, 0, 1);
-}")
+}
+  \end{minted}
+  \rule{\textwidth}{1pt}
+  \begin{minted}[]{clj}
+(def fragment-source "
+#version 130
+
+// ...
+
+")
   \end{minted}
 \end{frame}
 
@@ -493,8 +506,7 @@ void main()
 \begin{frame}[fragile]
   \pdfbookmark[2]{Fragment Shader}{texturefragment}
   \frametitle{Texture {-} Fragment Shader}
-  \begin{minted}[]{clj}
-(def fragment-source "
+  \begin{minted}[]{glsl}
 #version 130
 
 uniform vec2 iResolution;
@@ -504,7 +516,7 @@ out vec4 fragColor;
 void main()
 {
   fragColor = texture(moon, gl_FragCoord.xy / iResolution.xy);
-}")
+}
   \end{minted}
 \end{frame}
 
@@ -558,6 +570,49 @@ void main()
     (invoke
       [_this _window _button action _mods]
       (reset! mouse-button (= action GLFW/GLFW_PRESS)))))
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Vertex Shader}{cubevertex}
+  \frametitle{Cube {-} Vertex Shader}
+  \begin{minted}[]{glsl}
+#version 130
+#define M_PI 3.1415926535897932384626433832795
+uniform float fov;
+uniform float distance;
+uniform vec2 iResolution;
+uniform vec2 iMouse;
+in vec3 point;
+out vec3 vpoint;
+void main()
+{
+  float alpha = iMouse.x / iResolution.x * M_PI * 2.0 + M_PI;
+  float beta = (iMouse.y / iResolution.y - 0.5) * M_PI * 2.0;
+  // ...
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Cube {-} Vertex Shader}
+  \begin{minted}[]{glsl}
+{ // ...
+  mat3 rot_y = mat3(vec3(cos(alpha), 0, sin(alpha)),
+                    vec3(0, 1, 0),
+                    vec3(-sin(alpha), 0, cos(alpha)));
+  mat3 rot_x = mat3(vec3(1, 0, 0),
+                    vec3(0, cos(beta), -sin(beta)),
+                    vec3(0, sin(beta), cos(beta)));
+  vec3 p = rot_x * rot_y * point + vec3(0, 0, distance);
+  float f = 1.0 / tan(fov / 2.0);
+  float aspect = iResolution.x / iResolution.y;
+  float proj_x = p.x / p.z * f;
+  float proj_y = p.y / p.z * f * aspect;
+  float proj_z = p.z / (2.0 * distance);
+  gl_Position = vec4(proj_x, proj_y, proj_z, 1);
+  vpoint = point;
+}
   \end{minted}
 \end{frame}
 
