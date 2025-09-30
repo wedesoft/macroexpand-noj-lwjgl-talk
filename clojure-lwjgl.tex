@@ -2,6 +2,7 @@
 \usepackage{graphicx} % For including graphics.
 \usepackage{hyperref} % For links.
 \usepackage{multirow}
+\usepackage{transparent}
 \usepackage{minted}
 
 \title{Computer Graphics with Clojure, LWJGL, and Fastmath}
@@ -22,18 +23,18 @@
             linkcolor         = blue,
             urlcolor          = blue}
 
-\usebackgroundtemplate{\includegraphics[width=\paperwidth,height=\paperheight]{slide}}
+\usebackgroundtemplate{\transparent{0.6}\includegraphics[width=\paperwidth,height=\paperheight]{slide}}
 
 \setbeamersize{text margin left=0.5cm,
                text margin right=0.5cm}
 
 \usecolortheme{seahorse}
 
-
-
 \definecolor{slidecolor}{rgb}{0.65,0.71,0.72}
 \setbeamercolor{titlelike}{fg=black,bg=slidecolor!60}
 \setbeamercolor{frametitle}{fg=black,bg=slidecolor!100}
+
+\usemintedstyle{solarized-dark}
 
 \begin{document}
 
