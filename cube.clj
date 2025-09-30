@@ -66,26 +66,36 @@ void main()
   vpoint = point;
 }")
 
-(def fragment-source "
+(def uv-source "
 #version 130
 
 #define PI 3.1415926535897932384626433832795
-
-uniform sampler2D moon;
-in vec3 vpoint;
-out vec4 fragColor;
 
 vec2 uv(vec3 p)
 {
   float lon = atan(p.x, -p.z) / (2.0 * PI) + 0.5;
   float lat = 0.5 - atan(p.y, length(p.xz)) / PI;
   return vec2(lon, lat);
-}
+}")
+
+(def color-source "
+#version 130
+
+uniform sampler2D moon;
 
 vec3 color(vec2 uv)
 {
   return texture(moon, uv).rgb;
-}
+}")
+
+(def fragment-source "
+#version 130
+
+in vec3 vpoint;
+out vec4 fragColor;
+
+vec2 uv(vec3 p);
+vec3 color(vec2 uv);
 
 void main()
 {
@@ -111,8 +121,10 @@ void main()
     program))
 
 (def vertex-shader (make-shader vertex-source GL20/GL_VERTEX_SHADER))
+(def uv-shader (make-shader uv-source GL20/GL_FRAGMENT_SHADER))
+(def color-shader (make-shader color-source GL20/GL_FRAGMENT_SHADER))
 (def fragment-shader (make-shader fragment-source GL20/GL_FRAGMENT_SHADER))
-(def program (make-program vertex-shader fragment-shader))
+(def program (make-program vertex-shader uv-shader color-shader fragment-shader))
 
 (def vertices
   (float-array [-1.0 -1.0 -1.0

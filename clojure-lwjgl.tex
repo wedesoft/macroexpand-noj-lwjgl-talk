@@ -73,7 +73,7 @@
 
 \begin{frame}
   \pdfbookmark[1]{Space Flight Simulator Examples}{stateoftheart}
-  \frametitle{Space Flight Simulator Examples}
+  \frametitle{Space Flight Simulator Examples 1/4}
   \begin{minipage}[t]{0.49\textwidth}
     \begin{center}
       \includegraphics[width=\textwidth]{orbiter}\\
@@ -91,7 +91,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Space Flight Simulator Examples}
+  \frametitle{Space Flight Simulator Examples 2/4}
   \begin{minipage}[t]{0.49\textwidth}
     \begin{center}
       \includegraphics[width=\textwidth]{flight-of-nova}\\
@@ -109,7 +109,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Space Flight Simulator Examples}
+  \frametitle{Space Flight Simulator Examples 3/4}
   \begin{minipage}[t]{0.49\textwidth}
     \begin{center}
       \includegraphics[width=\textwidth]{tungsten-moon}\\
@@ -127,7 +127,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Space Flight Simulator Examples}
+  \frametitle{Space Flight Simulator Examples 4/4}
   \begin{minipage}[t]{0.49\textwidth}
     \begin{center}
       \includegraphics[width=\textwidth]{ksp}\\
@@ -575,7 +575,7 @@ void main()
 
 \begin{frame}[fragile]
   \pdfbookmark[2]{Vertex Shader}{cubevertex}
-  \frametitle{Cube {-} Vertex Shader}
+  \frametitle{Cube {-} Vertex Shader 1/2}
   \begin{minted}[]{glsl}
 #version 130
 #define M_PI 3.1415926535897932384626433832795
@@ -595,7 +595,7 @@ void main()
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Cube {-} Vertex Shader}
+  \frametitle{Cube {-} Vertex Shader 2/2}
   \begin{minted}[]{glsl}
 { // ...
   mat3 rot_y = mat3(vec3(cos(alpha), 0, sin(alpha)),
@@ -614,6 +614,63 @@ void main()
   vpoint = point;
 }
   \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Fragment Shader}{cubefragment}
+  \frametitle{Cube {-} Fragment Shader 1/3}
+  \begin{minted}[]{glsl}
+#version 130
+
+#define PI 3.1415926535897932384626433832795
+
+vec2 uv(vec3 p)
+{
+  float lon = atan(p.x, -p.z) / (2.0 * PI) + 0.5;
+  float lat = 0.5 - atan(p.y, length(p.xz)) / PI;
+  return vec2(lon, lat);
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Cube {-} Fragment Shader 2/3}
+  \begin{minted}[]{glsl}
+#version 130
+
+uniform sampler2D moon;
+
+vec3 color(vec2 uv)
+{
+  return texture(moon, uv).rgb;
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Cube {-} Fragment Shader 3/3}
+  \begin{minted}[]{glsl}
+#version 130
+
+in vec3 vpoint;
+out vec4 fragColor;
+
+vec2 uv(vec3 p);
+vec3 color(vec2 uv);
+
+void main()
+{
+  fragColor = vec4(color(uv(vpoint)), 1);
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}
+  \pdfbookmark[2]{Result}{cuberesult}
+  \frametitle{Cube {-} Result}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{cube}
+  \end{center}
 \end{frame}
 
 \begin{frame}
