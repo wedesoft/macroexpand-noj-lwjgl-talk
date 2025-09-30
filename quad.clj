@@ -59,9 +59,9 @@ void main()
 (def program (make-program vertex-shader fragment-shader))
 
 (def vertices
-  (float-array [ 1.0  1.0 0.0
-                -1.0  1.0 0.0
-                -1.0 -1.0 0.0
+  (float-array [ 1.0  1.0 0.0,
+                -1.0  1.0 0.0,
+                -1.0 -1.0 0.0,
                  1.0 -1.0 0.0]))
 
 (def indices

@@ -73,9 +73,9 @@ void main()
 
 vec2 uv(vec3 p)
 {
-  float lon = atan(p.x, -p.z) / (2.0 * PI) + 0.5;
-  float lat = 0.5 - atan(p.y, length(p.xz)) / PI;
-  return vec2(lon, lat);
+  float u = atan(p.x, -p.z) / (2.0 * PI) + 0.5;
+  float v = 0.5 - atan(p.y, length(p.xz)) / PI;
+  return vec2(u, v);
 }")
 
 (def color-source "
@@ -127,21 +127,21 @@ void main()
 (def program (make-program vertex-shader uv-shader color-shader fragment-shader))
 
 (def vertices
-  (float-array [-1.0 -1.0 -1.0
-                 1.0 -1.0 -1.0
-                -1.0  1.0 -1.0
-                 1.0  1.0 -1.0
-                -1.0 -1.0  1.0
-                 1.0 -1.0  1.0
-                -1.0  1.0  1.0
+  (float-array [-1.0 -1.0 -1.0,
+                 1.0 -1.0 -1.0,
+                -1.0  1.0 -1.0,
+                 1.0  1.0 -1.0,
+                -1.0 -1.0  1.0,
+                 1.0 -1.0  1.0,
+                -1.0  1.0  1.0,
                  1.0  1.0  1.0]))
 
 (def indices
-  (int-array [0 1 3 2
-              6 7 5 4
-              0 2 6 4
-              5 7 3 1
-              2 3 7 6
+  (int-array [0 1 3 2,
+              6 7 5 4,
+              0 2 6 4,
+              5 7 3 1,
+              2 3 7 6,
               4 5 1 0]))
 
 (defmacro def-make-buffer [method create-buffer]

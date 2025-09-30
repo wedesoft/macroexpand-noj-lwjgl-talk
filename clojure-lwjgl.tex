@@ -47,20 +47,13 @@
   \frametitle{About Me}
   \begin{minipage}[b]{0.79\textwidth}
     \begin{itemize}
-      \item As a kid: playing with Omikron Basic, Borland Pascal
       \item Computer Science at Karlsruhe University
         \begin{itemize}
           \item compiler construction, robotics, measurement engineering
         \end{itemize}
       \item PhD on Computer Vision using Ruby at Sheffield Hallam University
       \item Computer Vision and Machine Learning in Industry
-        \begin{itemize}
-          \item Using C++, Ruby, Python
-        \end{itemize}
-      \item Hobby projects
-        \begin{itemize}
-          \item C++, Ruby, GNU Guile, Clojure
-        \end{itemize}
+      \item Omikron Basic, Borland Pascal, C++, Ruby, GNU Guile, Clojure
     \end{itemize}
   \end{minipage}
   \begin{minipage}[b]{0.2\textwidth}
@@ -96,7 +89,7 @@
     \begin{center}
       \includegraphics[width=\textwidth]{flight-of-nova}\\
       \href{https://flight-of-nova.com/}{Flight of Nova}\\
-      proprietary, realistic, early access
+      proprietary, realistic, demo available, early access
     \end{center}
   \end{minipage}
   \begin{minipage}[t]{0.49\textwidth}
@@ -114,7 +107,7 @@
     \begin{center}
       \includegraphics[width=\textwidth]{tungsten-moon}\\
       \href{https://tungstenmoon.com/}{Tungsten Moon}\\
-      proprietary, demo available, to be released
+      proprietary, realistic, demo available, to be released
     \end{center}
   \end{minipage}
   \begin{minipage}[t]{0.49\textwidth}
@@ -353,9 +346,9 @@ void main()
   \frametitle{Single Quad {-} Vertices and Indices}
   \begin{minted}[]{clj}
 (def vertices  ;   x    y   z
-  (float-array [ 1.0  1.0 0.0
-                -1.0  1.0 0.0
-                -1.0 -1.0 0.0
+  (float-array [ 1.0  1.0 0.0,
+                -1.0  1.0 0.0,
+                -1.0 -1.0 0.0,
                  1.0 -1.0 0.0]))
 
 (def indices
@@ -642,9 +635,9 @@ void main()
 
 vec2 uv(vec3 p)
 {
-  float lon = atan(p.x, -p.z) / (2.0 * PI) + 0.5;
-  float lat = 0.5 - atan(p.y, length(p.xz)) / PI;
-  return vec2(lon, lat);
+  float u = atan(p.x, -p.z) / (2.0 * PI) + 0.5;
+  float v = 0.5 - atan(p.y, length(p.xz)) / PI;
+  return vec2(u, v);
 }
   \end{minted}
 \end{frame}
@@ -667,6 +660,71 @@ void main()
   \end{minted}
 \end{frame}
 
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Vertices and Indices}{cubevertices}
+  \frametitle{Cube {-} Vertices and Indices}
+  \begin{minipage}[t]{.48\textwidth}
+    \begin{minted}[]{clj}
+(def vertices  ;   x    y   z
+  (float-array [-1.0 -1.0 -1.0,
+                 1.0 -1.0 -1.0,
+                -1.0  1.0 -1.0,
+                 1.0  1.0 -1.0,
+                -1.0 -1.0  1.0,
+                 1.0 -1.0  1.0,
+                -1.0  1.0  1.0,
+                 1.0  1.0  1.0]))
+    \end{minted}
+  \end{minipage}
+  \begin{minipage}[t]{.48\textwidth}
+    \begin{minted}[]{clj}
+(def indices
+  (int-array [0 1 3 2,
+              6 7 5 4,
+              0 2 6 4,
+              5 7 3 1,
+              2 3 7 6,
+              4 5 1 0]))
+    \end{minted}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Uniform Variables}{cubeuniforms}
+  \frametitle{Cube {-} Uniform Variables}
+  \begin{minted}[]{clj}
+(GL20/glUseProgram program)
+(GL20/glUniform2f (GL20/glGetUniformLocation program "iResolution")
+                  window-width window-height)
+(GL20/glUniform1f (GL20/glGetUniformLocation program "fov")
+                  (to-radians 35.0))
+(GL20/glUniform1f (GL20/glGetUniformLocation program "distance") 10.0)
+(GL20/glUniform1i (GL20/glGetUniformLocation program "moon") 0)
+(GL13/glActiveTexture GL13/GL_TEXTURE0)
+(GL11/glBindTexture GL11/GL_TEXTURE_2D texture-color)
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Event Loop}{cubeloop}
+  \frametitle{Cube {-} Event Loop}
+  \begin{minted}[]{clj}
+(GL11/glEnable GL11/GL_CULL_FACE)
+(GL11/glCullFace GL11/GL_BACK)
+
+(while (not (GLFW/glfwWindowShouldClose window))
+       (when @mouse-button
+         (GL20/glUniform2f (GL20/glGetUniformLocation program "iMouse")
+                           (@mouse-pos 0) (@mouse-pos 1)))
+       (GL11/glClearColor 0.0 0.0 0.0 1.0)
+       (GL11/glClear GL11/GL_COLOR_BUFFER_BIT)
+       (GL11/glDrawElements GL11/GL_QUADS (count indices)
+                            GL11/GL_UNSIGNED_INT 0)
+       (GLFW/glfwSwapBuffers window)
+       (GLFW/glfwPollEvents))
+  \end{minted}
+\end{frame}
+
 \begin{frame}
   \pdfbookmark[2]{Result}{cuberesult}
   \frametitle{Cube {-} Result}
@@ -680,7 +738,11 @@ void main()
   \begin{center}
     \begin{huge}
       Thanks for listening!
-    \end{huge}
+    \end{huge}\\
+    \vspace{24pt}
+    Thanks to Daniel Slutsky for organizing Macroexpand Noj!\\
+    \vspace{24pt}
+    Slides made with \LaTeX~and Beamer
   \end{center}
 \end{frame}
 
