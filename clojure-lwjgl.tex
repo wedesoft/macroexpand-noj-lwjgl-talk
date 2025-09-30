@@ -502,7 +502,7 @@ uniform sampler2D moon;
 out vec4 fragColor;
 
 void main()
-{ 
+{
   fragColor = texture(moon, gl_FragCoord.xy / iResolution.xy);
 }")
   \end{minted}
@@ -535,6 +535,30 @@ void main()
   \begin{center}
     \includegraphics[width=.8\textwidth]{texture}
   \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[1]{Cube}{cube}
+  \pdfbookmark[2]{Mouse Callbacks}{cubemouse}
+  \frametitle{Cube {-} Mouse Callbacks}
+  \begin{minted}[]{clj}
+(def mouse-pos (atom [0.0 0.0]))
+(def mouse-button (atom false))
+
+(GLFW/glfwSetCursorPosCallback
+  window
+  (reify GLFWCursorPosCallbackI
+    (invoke
+      [_this _window xpos ypos]
+      (reset! mouse-pos [xpos ypos]))))
+
+(GLFW/glfwSetMouseButtonCallback
+  window
+  (reify GLFWMouseButtonCallbackI
+    (invoke
+      [_this _window _button action _mods]
+      (reset! mouse-button (= action GLFW/GLFW_PRESS)))))
+  \end{minted}
 \end{frame}
 
 \begin{frame}
