@@ -734,6 +734,156 @@ void main()
   \end{center}
 \end{frame}
 
+\begin{frame}[fragile]
+  \pdfbookmark[1]{Sphere}{sphere}
+  \pdfbookmark[2]{Vertices and Indices}{spherevertices}
+  \frametitle{Sphere {-} Vertices and Indices 1/4}
+  \begin{minipage}[t]{.48\textwidth}
+    \begin{minted}[]{clj}
+(def points
+  [(vec3 -1.0 -1.0 -1.0)
+   (vec3  1.0 -1.0 -1.0)
+   (vec3 -1.0  1.0 -1.0)
+   (vec3  1.0  1.0 -1.0)
+   (vec3 -1.0 -1.0  1.0)
+   (vec3  1.0 -1.0  1.0)
+   (vec3 -1.0  1.0  1.0)
+   (vec3  1.0  1.0  1.0)])
+    \end{minted}
+  \end{minipage}
+  \begin{minipage}[t]{.48\textwidth}
+    \begin{minted}[]{clj}
+(def quads
+  [[0 1 3 2]
+   [6 7 5 4]
+   [0 2 6 4]
+   [5 7 3 1]
+   [2 3 7 6]
+   [4 5 1 0]])
+    \end{minted}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Sphere {-} Vertices and Indices 2/4}
+  \begin{minted}[]{clj}
+(def radius 1737.4)
+
+(def corners
+  (map (fn [[i _ _ _]] (nth points i))
+       quads))
+
+(def u-vectors
+  (map (fn [[i j _ _]] (sub (nth points j) (nth points i)))
+       quads))
+
+(def v-vectors
+  (map (fn [[i _ _ l]] (sub (nth points l) (nth points i)))
+       quads))
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Sphere {-} Vertices and Indices 3/4}
+  \begin{minted}[]{clj}
+(defn sphere-points [n c u v]
+  (for [j (range (inc n)) i (range (inc n))]
+       (-> c
+           (add (mult u (/ i n)))
+           (add (mult v (/ j n)))
+           normalize
+           (mult radius ))))
+
+(defn sphere-indices [n face]
+  (for [j (range n) i (range n)]
+       (let [offset (+ (* face (inc n) (inc n)) (* j (inc n)) i)]
+         [offset
+          (+ offset 1)
+          (+ offset (inc n) 1)
+          (+ offset (inc n))])))
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Sphere {-} Vertices and Indices 4/4}
+  \begin{minted}[]{clj}
+(def n 16)
+
+(def vertices
+  (float-array
+    (flatten
+      (map (partial sphere-points n)
+           corners u-vectors v-vectors))))
+
+(def indices
+  (int-array
+    (flatten
+      (map (partial sphere-indices n)
+           (range 6)))))
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Uniform Variables}{sphereuniforms}
+  \frametitle{Sphere {-} Uniform Variables}
+  \begin{minted}[]{clj}
+(GL20/glUseProgram program)
+(GL20/glUniform2f (GL20/glGetUniformLocation program "iResolution")
+                  window-width window-height)
+(GL20/glUniform1f (GL20/glGetUniformLocation program "fov")
+                  (to-radians 35.0))
+(GL20/glUniform1f (GL20/glGetUniformLocation program "distance")
+                  (* radius 10.0))
+(GL20/glUniform1i (GL20/glGetUniformLocation program "moon") 0)
+(GL13/glActiveTexture GL13/GL_TEXTURE0)
+(GL11/glBindTexture GL11/GL_TEXTURE_2D texture-color)
+  \end{minted}
+\end{frame}
+
+\begin{frame}
+  \pdfbookmark[2]{Result}{sphereresult}
+  \frametitle{Sphere {-} Result}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{sphere}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[1]{Moon}{moon}
+  \pdfbookmark[2]{Load Elevation Data}{elevationload}
+  \frametitle{Moon {-} Load Elevation Data}
+  \begin{minted}[]{clj}
+(def ldem (ImageIO/read (io/file "ldem_4.tif")))
+(def ldem-raster (.getRaster ldem))
+(def ldem-width (.getWidth ldem))
+(def ldem-height (.getHeight ldem))
+(def ldem-pixels (float-array (* ldem-width ldem-height)))
+(.getPixels ldem-raster 0 0 ldem-width ldem-height ldem-pixels)
+(def resolution (/ (* 2.0 PI radius) ldem-width))
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Create Elevation Texture}{elevationcreate}
+  \frametitle{Moon {-} Create Elevation Texture}
+  \begin{minted}[]{clj}
+(def texture-ldem (GL11/glGenTextures))
+(GL11/glBindTexture GL11/GL_TEXTURE_2D texture-ldem)
+(GL11/glTexImage2D GL11/GL_TEXTURE_2D 0 GL30/GL_R32F
+                   ldem-width ldem-height 0
+                   GL11/GL_RED GL11/GL_FLOAT
+                   ldem-pixels)
+(GL11/glTexParameteri GL11/GL_TEXTURE_2D GL11/GL_TEXTURE_MIN_FILTER
+                      GL11/GL_LINEAR)
+(GL11/glTexParameteri GL11/GL_TEXTURE_2D GL11/GL_TEXTURE_MAG_FILTER
+                      GL11/GL_LINEAR)
+(GL11/glTexParameteri GL11/GL_TEXTURE_2D GL11/GL_TEXTURE_WRAP_S
+                      GL11/GL_REPEAT)
+(GL11/glTexParameteri GL11/GL_TEXTURE_2D GL11/GL_TEXTURE_WRAP_T
+                      GL11/GL_REPEAT)
+  \end{minted}
+\end{frame}
+
 \begin{frame}
   \pdfbookmark[1]{questions}{questions}
   \begin{center}

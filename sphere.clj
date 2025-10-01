@@ -1,5 +1,5 @@
 (require '[clojure.java.io :as io]
-         '[clojure.math :refer (PI to-radians)]
+         '[clojure.math :refer (to-radians)]
          '[fastmath.vector :refer (vec3 sub add mult normalize)])
 (import '[javax.imageio ImageIO]
         '[org.lwjgl.glfw GLFW GLFWCursorPosCallbackI GLFWMouseButtonCallbackI]
@@ -13,7 +13,7 @@
 (def radius 1737.4)
 
 (GLFW/glfwDefaultWindowHints)
-(def window (GLFW/glfwCreateWindow window-width window-height "moon" 0 0))
+(def window (GLFW/glfwCreateWindow window-width window-height "sphere" 0 0))
 
 (GLFW/glfwShowWindow window)
 (GLFW/glfwMakeContextCurrent window)
@@ -233,23 +233,6 @@ void main()
 (GL11/glTexParameteri GL11/GL_TEXTURE_2D GL11/GL_TEXTURE_WRAP_S GL11/GL_REPEAT)
 (GL11/glTexParameteri GL11/GL_TEXTURE_2D GL11/GL_TEXTURE_WRAP_T GL11/GL_REPEAT)
 (GL11/glBindTexture GL11/GL_TEXTURE_2D 0)
-
-(def ldem (ImageIO/read (io/file "ldem_4.tif")))
-(def ldem-raster (.getRaster ldem))
-(def ldem-width (.getWidth ldem))
-(def ldem-height (.getHeight ldem))
-(def ldem-pixels (float-array (* ldem-width ldem-height)))
-(.getPixels ldem-raster 0 0 ldem-width ldem-height ldem-pixels) nil
-(def resolution (/ (* 2.0 PI radius) ldem-width))
-
-(def texture-ldem (GL11/glGenTextures))
-(GL11/glBindTexture GL11/GL_TEXTURE_2D texture-ldem)
-(GL11/glTexImage2D GL11/GL_TEXTURE_2D 0 GL30/GL_R32F ldem-width ldem-height 0
-                   GL11/GL_RED GL11/GL_FLOAT ldem-pixels)
-(GL11/glTexParameteri GL11/GL_TEXTURE_2D GL11/GL_TEXTURE_MIN_FILTER GL11/GL_LINEAR)
-(GL11/glTexParameteri GL11/GL_TEXTURE_2D GL11/GL_TEXTURE_MAG_FILTER GL11/GL_LINEAR)
-(GL11/glTexParameteri GL11/GL_TEXTURE_2D GL11/GL_TEXTURE_WRAP_S GL11/GL_REPEAT)
-(GL11/glTexParameteri GL11/GL_TEXTURE_2D GL11/GL_TEXTURE_WRAP_T GL11/GL_REPEAT)
 
 (GL20/glUseProgram program)
 (GL20/glUniform2f (GL20/glGetUniformLocation program "iResolution") window-width window-height)
