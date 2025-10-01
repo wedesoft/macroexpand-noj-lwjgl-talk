@@ -251,11 +251,11 @@ void main()
   (map (fn [[i _ _ l]] (sub (nth points l) (nth points i)))
        quads))
 
-(defn sphere-points [n c u v]
+(defn sphere-points [n corner u-vector v-vector]
   (for [j (range (inc n)) i (range (inc n))]
-       (-> c
-           (add (mult u (/ i n)))
-           (add (mult v (/ j n)))
+       (-> corner
+           (add (mult u-vector (/ i n)))
+           (add (mult v-vector (/ j n)))
            normalize
            (mult radius ))))
 
