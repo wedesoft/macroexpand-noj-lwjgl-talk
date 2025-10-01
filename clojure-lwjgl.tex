@@ -326,7 +326,7 @@ void main()
 \end{frame}
 
 \begin{frame}[fragile]
-  \pdfbookmark[2]{Linking Shader Program}{quadcompile}
+  \pdfbookmark[2]{Linking Shader Program}{quadlink}
   \frametitle{Single Quad {-} Linking Shader Program}
   \begin{minted}[]{clj}
 (defn make-program [& shaders]
@@ -344,7 +344,7 @@ void main()
 \end{frame}
 
 \begin{frame}[fragile]
-  \pdfbookmark[1]{Vertices and Indices}{quadvertices}
+  \pdfbookmark[2]{Vertices and Indices}{quadvertices}
   \frametitle{Single Quad {-} Vertices and Indices}
   \begin{minted}[]{clj}
 (def vertices  ;   x    y   z
@@ -534,9 +534,6 @@ void main()
   \pdfbookmark[2]{Uniform Variables}{textureuniforms}
   \frametitle{Texture {-} Uniform Variables}
   \begin{minted}[]{clj}
-(GL20/glUseProgram program)
-(GL20/glUniform2f (GL20/glGetUniformLocation program "iResolution")
-                  window-width window-height)
 (GL20/glUniform1i (GL20/glGetUniformLocation program "moon") 0)
 (GL13/glActiveTexture GL13/GL_TEXTURE0)
 (GL11/glBindTexture GL11/GL_TEXTURE_2D texture-color)
@@ -695,15 +692,9 @@ void main()
   \pdfbookmark[2]{Uniform Variables}{cubeuniforms}
   \frametitle{Cube {-} Uniform Variables}
   \begin{minted}[]{clj}
-(GL20/glUseProgram program)
-(GL20/glUniform2f (GL20/glGetUniformLocation program "iResolution")
-                  window-width window-height)
 (GL20/glUniform1f (GL20/glGetUniformLocation program "fov")
                   (to-radians 35.0))
 (GL20/glUniform1f (GL20/glGetUniformLocation program "distance") 10.0)
-(GL20/glUniform1i (GL20/glGetUniformLocation program "moon") 0)
-(GL13/glActiveTexture GL13/GL_TEXTURE0)
-(GL11/glBindTexture GL11/GL_TEXTURE_2D texture-color)
   \end{minted}
 \end{frame}
 
@@ -828,16 +819,8 @@ void main()
   \pdfbookmark[2]{Uniform Variables}{sphereuniforms}
   \frametitle{Sphere {-} Uniform Variables}
   \begin{minted}[]{clj}
-(GL20/glUseProgram program)
-(GL20/glUniform2f (GL20/glGetUniformLocation program "iResolution")
-                  window-width window-height)
-(GL20/glUniform1f (GL20/glGetUniformLocation program "fov")
-                  (to-radians 35.0))
 (GL20/glUniform1f (GL20/glGetUniformLocation program "distance")
                   (* radius 10.0))
-(GL20/glUniform1i (GL20/glGetUniformLocation program "moon") 0)
-(GL13/glActiveTexture GL13/GL_TEXTURE0)
-(GL11/glBindTexture GL11/GL_TEXTURE_2D texture-color)
   \end{minted}
 \end{frame}
 
@@ -965,8 +948,8 @@ vec3 normal(mat3 horizon, vec3 p)
 \end{frame}
 
 \begin{frame}[fragile]
-  \pdfbookmark[2]{Fragment Shader}{cubefragment}
-  \frametitle{Moon {-} Fragment Shader 2/2}
+  \pdfbookmark[2]{Fragment Shader}{moonfragment}
+  \frametitle{Moon {-} Fragment Shader 1/2}
   \begin{minted}[]{glsl}
 #version 130
 
@@ -987,8 +970,7 @@ vec3 normal(mat3 horizon, vec3 p);
 \end{frame}
 
 \begin{frame}[fragile]
-  \pdfbookmark[2]{Fragment Shader}{cubefragment}
-  \frametitle{Moon {-} Fragment Shader 1/2}
+  \frametitle{Moon {-} Fragment Shader 2/2}
   \begin{minted}[]{glsl}
 // ...
 
@@ -1002,8 +984,36 @@ void main()
   \end{minted}
 \end{frame}
 
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Uniform Variables}{moonuniforms}
+  \frametitle{Moon {-} Uniform Variables}
+  \begin{minted}[]{clj}
+(def light (normalize (vec3 -1 0 -1)))
+
+;; ...
+(GL20/glUniform1f (GL20/glGetUniformLocation program "resolution")
+                  resolution)
+(GL20/glUniform1f (GL20/glGetUniformLocation program "ambient") 0.1)
+(GL20/glUniform1f (GL20/glGetUniformLocation program "diffuse") 0.9)
+(GL20/glUniform3f (GL20/glGetUniformLocation program "light")
+                  (light 0) (light 1) (light 2))
+(GL20/glUniform1i (GL20/glGetUniformLocation program "ldem") 1)
+;; ...
+(GL13/glActiveTexture GL13/GL_TEXTURE1)
+(GL11/glBindTexture GL11/GL_TEXTURE_2D texture-ldem)
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Terminate}{moonterminate}
+  \frametitle{Moon {-} Terminate}
+  \begin{minted}[]{clj}
+(GL11/glDeleteTextures texture-ldem)
+  \end{minted}
+\end{frame}
+
 \begin{frame}
-  \pdfbookmark[1]{questions}{questions}
+  \pdfbookmark[1]{Questions}{questions}
   \begin{center}
     \begin{huge}
       Thanks for listening!
