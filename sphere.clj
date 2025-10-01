@@ -8,12 +8,16 @@
 
 (GLFW/glfwInit)
 
-(def window-width 1280)
-(def window-height 720)
 (def radius 1737.4)
 
+(def monitor (GLFW/glfwGetPrimaryMonitor))
+(def mode (GLFW/glfwGetVideoMode monitor))
+(def window-width (.width mode))
+(def window-height (.height mode))
+
 (GLFW/glfwDefaultWindowHints)
-(def window (GLFW/glfwCreateWindow window-width window-height "sphere" 0 0))
+(GLFW/glfwWindowHint GLFW/GLFW_DECORATED GLFW/GLFW_FALSE)
+(def window (GLFW/glfwCreateWindow window-width window-height "cube" 0 0))
 
 (GLFW/glfwShowWindow window)
 (GLFW/glfwMakeContextCurrent window)
