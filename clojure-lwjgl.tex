@@ -3,6 +3,7 @@
 \usepackage{hyperref} % For links.
 \usepackage{multirow}
 \usepackage{transparent}
+\usepackage{tikz}
 \usepackage{minted}
 
 \title{Computer Graphics with Clojure, LWJGL, and Fastmath}
@@ -23,7 +24,15 @@
             linkcolor         = blue,
             urlcolor          = blue}
 
-\usebackgroundtemplate{\transparent{0.6}\includegraphics[width=\paperwidth,height=\paperheight]{slide}}
+\usebackgroundtemplate{
+  \transparent{0.6}\includegraphics[width=\paperwidth,height=\paperheight]{slide}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south west,yshift=-0.05cm,xshift=0.0cm] at (current page.south west) {
+      \begin{tiny}
+        \url{https://www.wedesoft.de/downloads/clojure-lwjgl.pdf}\\
+      \end{tiny}};
+  \end{tikzpicture}
+}
 
 \setbeamersize{text margin left=0.5cm,
                text margin right=0.5cm}
