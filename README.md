@@ -17,6 +17,7 @@ In his spare time he got interested in Ruby, GNU Guile, and finally Clojure.
 
 ## Links
 
+* [PDF Slides](https://www.wedesoft.de/downloads/clojure-lwjgl.pdf)
 * [Clojure Civitas - OpenGL Visualization with LWJGL](https://clojurecivitas.github.io/opengl_visualization/main.html)
 * [Interactive Moon viewer](https://github.com/wedesoft/macroexpand-noj-lwjgl)
 * [sfsim space flight simulator](https://wedesoft.github.io/sfsim/)
