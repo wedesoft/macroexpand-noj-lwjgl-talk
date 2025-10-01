@@ -90,7 +90,7 @@ void main()
 
 (def-make-buffer make-float-buffer BufferUtils/createFloatBuffer)
 (def-make-buffer make-int-buffer BufferUtils/createIntBuffer)
-(def-make-buffer make-byte-buffer BufferUtils/createByteBuffer) 
+(def-make-buffer make-byte-buffer BufferUtils/createByteBuffer)
 
 (defn setup-vao [vertices indices]
   (let [vao (GL30/glGenVertexArrays)
