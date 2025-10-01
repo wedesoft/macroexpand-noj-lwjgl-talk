@@ -498,8 +498,8 @@ void main()
 \end{frame}
 
 \begin{frame}[fragile]
-  \pdfbookmark[2]{Fragment Shader}{texturefragment}
-  \frametitle{Texture {-} Fragment Shader 1/2}
+  \pdfbookmark[2]{Color Lookup}{texturecolor}
+  \frametitle{Texture {-} Color Lookup}
   \begin{minted}[]{glsl}
 #version 130
 
@@ -514,7 +514,7 @@ vec3 color(vec2 uv)
 
 \begin{frame}[fragile]
   \pdfbookmark[2]{Fragment Shader}{texturefragment}
-  \frametitle{Texture {-} Fragment Shader 2/2}
+  \frametitle{Texture {-} Fragment Shader}
   \begin{minted}[]{glsl}
 #version 130
 
@@ -627,8 +627,8 @@ void main()
 \end{frame}
 
 \begin{frame}[fragile]
-  \pdfbookmark[2]{Fragment Shader}{cubefragment}
-  \frametitle{Cube {-} Fragment Shader 1/2}
+  \pdfbookmark[2]{Map Texture onto Sphere}{cubemap}
+  \frametitle{Cube {-} Map Texture onto Sphere}
   \begin{minted}[]{glsl}
 #version 130
 
@@ -644,7 +644,8 @@ vec2 uv(vec3 p)
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Cube {-} Fragment Shader 2/2}
+  \pdfbookmark[2]{Fragment Shader}{cubefragment}
+  \frametitle{Cube {-} Fragment Shader}
   \begin{minted}[]{glsl}
 #version 130
 
@@ -924,8 +925,8 @@ mat3 oriented_matrix(vec3 n)
 \end{frame}
 
 \begin{frame}[fragile]
-  \pdfbookmark[2]{Fragment Shader}{moonfragment}
-  \frametitle{Moon {-} Fragment Shader 1/2}
+  \pdfbookmark[2]{Elevation Lookup}{moonelevation}
+  \frametitle{Moon {-} Elevation Lookup}
   \begin{minted}[]{glsl}
 #version 130
 
@@ -941,7 +942,8 @@ float elevation(vec3 p)
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Moon {-} Fragment Shader 2/2}
+  \pdfbookmark[2]{Normal Vector}{moonnormal}
+  \frametitle{Moon {-} Normal Vector}
   \begin{minted}[]{glsl}
 #version 130
 
@@ -958,6 +960,44 @@ vec3 normal(mat3 horizon, vec3 p)
   vec3 u = horizon * vec3(elevation(pr) - elevation(pl), 2 * resolution, 0);
   vec3 v = horizon * vec3(elevation(pd) - elevation(pu), 0, 2 * resolution);
   return normalize(cross(u, v));
+}
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Fragment Shader}{cubefragment}
+  \frametitle{Moon {-} Fragment Shader 2/2}
+  \begin{minted}[]{glsl}
+#version 130
+
+uniform float ambient;
+uniform float diffuse;
+uniform vec3 light;
+
+in vec3 vpoint;
+out vec4 fragColor;
+
+vec2 uv(vec3 p);
+vec3 color(vec2 uv);
+mat3 oriented_matrix(vec3 n);
+vec3 normal(mat3 horizon, vec3 p);
+
+// ...
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Fragment Shader}{cubefragment}
+  \frametitle{Moon {-} Fragment Shader 1/2}
+  \begin{minted}[]{glsl}
+// ...
+
+void main()
+{
+  mat3 horizon = oriented_matrix(normalize(vpoint));
+  vec3 normal = normal(horizon, vpoint);
+  float phong = ambient + diffuse * max(0.0, dot(light, normal));
+  fragColor = vec4(color(uv(vpoint)) * phong, 1);
 }
   \end{minted}
 \end{frame}

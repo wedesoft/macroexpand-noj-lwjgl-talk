@@ -150,15 +150,24 @@ vec3 normal(mat3 horizon, vec3 p)
 (def fragment-source "
 #version 130
 
+uniform float ambient;
+uniform float diffuse;
+uniform vec3 light;
+
 in vec3 vpoint;
 out vec4 fragColor;
 
 vec2 uv(vec3 p);
 vec3 color(vec2 uv);
+mat3 oriented_matrix(vec3 n);
+vec3 normal(mat3 horizon, vec3 p);
 
 void main()
 {
-  fragColor = vec4(color(uv(vpoint)), 1);
+  mat3 horizon = oriented_matrix(normalize(vpoint));
+  vec3 normal = normal(horizon, vpoint);
+  float phong = ambient + diffuse * max(0.0, dot(light, normal));
+  fragColor = vec4(color(uv(vpoint)) * phong, 1);
 }")
 
 (defn make-shader [source shader-type]
@@ -181,9 +190,12 @@ void main()
 
 (def vertex-shader (make-shader vertex-source GL20/GL_VERTEX_SHADER))
 (def uv-shader (make-shader uv-source GL20/GL_FRAGMENT_SHADER))
+(def oriented-matrix-shader (make-shader oriented-matrix-source GL20/GL_FRAGMENT_SHADER))
 (def color-shader (make-shader color-source GL20/GL_FRAGMENT_SHADER))
+(def elevation-shader (make-shader elevation-source GL20/GL_FRAGMENT_SHADER))
+(def normal-shader (make-shader normal-source GL20/GL_FRAGMENT_SHADER))
 (def fragment-shader (make-shader fragment-source GL20/GL_FRAGMENT_SHADER))
-(def program (make-program vertex-shader uv-shader color-shader fragment-shader))
+(def program (make-program vertex-shader uv-shader oriented-matrix-shader color-shader elevation-shader normal-shader fragment-shader))
 
 (defmacro def-make-buffer [method create-buffer]
   `(defn ~method [data#]
