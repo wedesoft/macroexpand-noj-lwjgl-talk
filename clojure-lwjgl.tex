@@ -884,6 +884,45 @@ void main()
   \end{minted}
 \end{frame}
 
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Horizon Matrix}{moonhorizon}
+  \frametitle{Moon {-} Horizon Matrix}
+  \begin{minipage}[t]{.48\textwidth}
+    \begin{minted}[]{glsl}
+#version 130
+vec3 orthogonal_vector(vec3 n)
+{
+  vec3 b;
+  if (abs(n.x) <= abs(n.y)) {
+    if (abs(n.x) <= abs(n.z))
+      b = vec3(1, 0, 0);
+    else
+      b = vec3(0, 0, 1);
+  } else {
+    if (abs(n.y) <= abs(n.z))
+      b = vec3(0, 1, 0);
+    else
+      b = vec3(0, 0, 1);
+  };
+  return normalize(cross(n, b));
+}
+    \end{minted}
+  \end{minipage}
+  \begin{minipage}[t]{.48\textwidth}
+    \begin{minted}[]{glsl}
+#version 130
+vec3 orthogonal_vector(vec3 n);
+
+mat3 oriented_matrix(vec3 n)
+{
+  vec3 o1 = orthogonal_vector(n);
+  vec3 o2 = cross(n, o1);
+  return mat3(n, o1, o2);
+}
+    \end{minted}
+  \end{minipage}
+\end{frame}
+
 \begin{frame}
   \pdfbookmark[1]{questions}{questions}
   \begin{center}
