@@ -923,6 +923,23 @@ mat3 oriented_matrix(vec3 n)
   \end{minipage}
 \end{frame}
 
+\begin{frame}[fragile]
+  \pdfbookmark[2]{Fragment Shader}{moonfragment}
+  \frametitle{Moon {-} Fragment Shader 1/2}
+  \begin{minted}[]{glsl}
+#version 130
+
+uniform sampler2D ldem;
+
+vec2 uv(vec3 p);
+
+float elevation(vec3 p)
+{
+  return texture(ldem, uv(p)).r;
+}
+  \end{minted}
+\end{frame}
+
 \begin{frame}
   \pdfbookmark[1]{questions}{questions}
   \begin{center}

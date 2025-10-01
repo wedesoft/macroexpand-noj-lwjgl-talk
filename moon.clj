@@ -117,6 +117,18 @@ vec3 color(vec2 uv)
   return texture(moon, uv).rgb;
 }")
 
+(def elevation-source "
+#version 130
+
+uniform sampler2D ldem;
+
+vec2 uv(vec3 p);
+
+float elevation(vec3 p)
+{
+  return texture(ldem, uv(p)).r;
+}")
+
 (def fragment-source "
 #version 130
 
