@@ -129,6 +129,24 @@ float elevation(vec3 p)
   return texture(ldem, uv(p)).r;
 }")
 
+(def normal-source "
+#version 130
+
+uniform float resolution;
+
+float elevation(vec3 p);
+
+vec3 normal(mat3 horizon, vec3 p)
+{
+  vec3 pl = p + horizon * vec3(0, -1,  0) * resolution;
+  vec3 pr = p + horizon * vec3(0,  1,  0) * resolution;
+  vec3 pu = p + horizon * vec3(0,  0, -1) * resolution;
+  vec3 pd = p + horizon * vec3(0,  0,  1) * resolution;
+  vec3 u = horizon * vec3(elevation(pr) - elevation(pl), 2 * resolution, 0);
+  vec3 v = horizon * vec3(elevation(pd) - elevation(pu), 0, 2 * resolution);
+  return normalize(cross(u, v));
+}")
+
 (def fragment-source "
 #version 130
 
