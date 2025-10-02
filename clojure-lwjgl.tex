@@ -24,12 +24,17 @@
             linkcolor         = blue,
             urlcolor          = blue}
 
+\definecolor{slidecolor}{rgb}{0.65,0.71,0.72}
+\definecolor{bluish}{rgb}{0.678,0.678,0.878}
+
 \usebackgroundtemplate{
-  \transparent{0.6}\includegraphics[width=\paperwidth,height=\paperheight]{slide}
+  {\transparent{0.6}\includegraphics[width=\paperwidth,height=\paperheight]{slide}}
   \begin{tikzpicture}[remember picture,overlay]
     \node[anchor=south west,yshift=-0.05cm,xshift=0.0cm] at (current page.south west) {
       \begin{tiny}
-        \url{https://www.wedesoft.de/downloads/clojure-lwjgl.pdf}\\
+        \hypersetup{urlcolor=bluish}
+        \url{https://www.wedesoft.de/downloads/clojure-lwjgl.pdf}
+        \hypersetup{urlcolor=blue}
       \end{tiny}};
   \end{tikzpicture}
 }
@@ -39,7 +44,6 @@
 
 \usecolortheme{seahorse}
 
-\definecolor{slidecolor}{rgb}{0.65,0.71,0.72}
 \setbeamercolor{titlelike}{fg=black,bg=slidecolor!60}
 \setbeamercolor{frametitle}{fg=black,bg=slidecolor!100}
 
@@ -373,7 +377,8 @@ void main()
 \begin{frame}[fragile]
   \pdfbookmark[2]{Vertices and Indices}{quadvertices}
   \frametitle{Single Quad {-} Vertices and Indices}
-  \begin{minted}[]{clj}
+  \begin{minipage}[c]{.48\textwidth}
+    \begin{minted}[]{clj}
 (def vertices  ;   x    y   z
   (float-array [ 1.0  1.0 0.0,
                 -1.0  1.0 0.0,
@@ -382,7 +387,11 @@ void main()
 
 (def indices
   (int-array [0 1 2 3]))
-  \end{minted}
+    \end{minted}
+  \end{minipage}
+  \begin{minipage}[c]{.48\textwidth}
+    \includegraphics[width=\textwidth]{quadcoords}
+  \end{minipage}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -707,7 +716,7 @@ void main()
 \begin{frame}[fragile]
   \pdfbookmark[2]{Vertices and Indices}{cubevertices}
   \frametitle{Cube {-} Vertices and Indices}
-  \begin{minipage}[t]{.48\textwidth}
+  \begin{minipage}[c]{.48\textwidth}
     \begin{minted}[]{clj}
 (def vertices  ;   x    y   z
   (float-array [-1.0 -1.0 -1.0,
@@ -720,7 +729,7 @@ void main()
                  1.0  1.0  1.0]))
     \end{minted}
   \end{minipage}
-  \begin{minipage}[t]{.48\textwidth}
+  \begin{minipage}[c]{.48\textwidth}
     \begin{minted}[]{clj}
 (def indices
   (int-array [0 1 3 2,
@@ -730,6 +739,9 @@ void main()
               2 3 7 6,
               4 5 1 0]))
     \end{minted}
+    \begin{center}
+      \includegraphics[width=0.6\textwidth]{cubecoords}
+    \end{center}
   \end{minipage}
 \end{frame}
 
@@ -784,8 +796,9 @@ void main()
 \begin{frame}[fragile]
   \pdfbookmark[2]{Vertices and Indices}{spherevertices}
   \frametitle{Sphere {-} Vertices and Indices 1/4}
-  \begin{minipage}[t]{.48\textwidth}
-    \begin{minted}[]{clj}
+  \begin{center}
+    \begin{minipage}[t]{.4\textwidth}
+      \begin{minted}[]{clj}
 (def points
   [(vec3 -1.0 -1.0 -1.0)
    (vec3  1.0 -1.0 -1.0)
@@ -795,10 +808,10 @@ void main()
    (vec3  1.0 -1.0  1.0)
    (vec3 -1.0  1.0  1.0)
    (vec3  1.0  1.0  1.0)])
-    \end{minted}
-  \end{minipage}
-  \begin{minipage}[t]{.48\textwidth}
-    \begin{minted}[]{clj}
+      \end{minted}
+    \end{minipage}
+    \begin{minipage}[t]{.4\textwidth}
+      \begin{minted}[]{clj}
 (def quads
   [[0 1 3 2]
    [6 7 5 4]
@@ -806,13 +819,15 @@ void main()
    [5 7 3 1]
    [2 3 7 6]
    [4 5 1 0]])
-    \end{minted}
-  \end{minipage}
+      \end{minted}
+    \end{minipage}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Sphere {-} Vertices and Indices 2/4}
-  \begin{minted}[]{clj}
+  \begin{minipage}[b]{0.75\textwidth}
+    \begin{minted}[]{clj}
 (def radius 1737.4)
 
 (def corners
@@ -826,7 +841,11 @@ void main()
 (def v-vectors
   (map (fn [[i _ _ l]] (sub (nth points l) (nth points i)))
        quads))
-  \end{minted}
+    \end{minted}
+  \end{minipage}
+  \begin{minipage}[b]{0.23\textwidth}
+    \includegraphics[width=\textwidth]{cuv}
+  \end{minipage}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -852,7 +871,8 @@ void main()
 
 \begin{frame}[fragile]
   \frametitle{Sphere {-} Vertices and Indices 4/4}
-  \begin{minted}[]{clj}
+  \begin{minipage}[b]{0.6\textwidth}
+    \begin{minted}[]{clj}
 (def n 16)
 
 (def vertices
@@ -866,7 +886,11 @@ void main()
     (flatten
       (map (partial sphere-indices n)
            (range 6)))))
-  \end{minted}
+    \end{minted}
+  \end{minipage}
+  \begin{minipage}[b]{0.38\textwidth}
+    \includegraphics[width=\textwidth]{mesh}
+  \end{minipage}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -967,6 +991,9 @@ mat3 oriented_matrix(vec3 n)
   return mat3(n, o1, o2);
 }
     \end{minted}
+    \begin{center}
+      \includegraphics[width=.6\textwidth]{horizon}
+    \end{center}
   \end{minipage}
 \end{frame}
 
@@ -1008,6 +1035,10 @@ vec3 normal(mat3 horizon, vec3 p)
   return normalize(cross(u, v));
 }
   \end{minted}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=-5mm,yshift=-5mm,anchor=north east] at (current page.north east){%
+      \includegraphics[width=.3\textwidth]{normal}};
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1093,7 +1124,37 @@ void main()
     \item create a multiresolution map
     \item use tessellation to increase the mesh resolution
     \item use elevation data to deform the mesh
+    \item load map tiles in the background using futures
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \pdfbookmark[1]{sfsim}{sfsim}
+  \frametitle{sfsim 1/4}
+  \begin{center}
+    \includegraphics[width=.84\textwidth]{sfsim4}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{sfsim 2/4}
+  \begin{center}
+    \includegraphics[width=.84\textwidth]{sfsim2}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{sfsim 3/4}
+  \begin{center}
+    \includegraphics[width=.84\textwidth]{sfsim1}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{sfsim 4/4}
+  \begin{center}
+    \includegraphics[width=.84\textwidth]{sfsim3}
+  \end{center}
 \end{frame}
 
 \begin{frame}
@@ -1106,7 +1167,9 @@ void main()
     \vspace{24pt}
     Thanks to Daniel Slutsky for organizing Macroexpand Noj 2025!\\
     \vspace{24pt}
-    Slides made with \LaTeX~and Beamer
+    Slides made with \LaTeX~and Beamer\\
+    \vspace{24pt}
+    \url{https://github.com/wedesoft/sfsim}
   \end{center}
 \end{frame}
 
