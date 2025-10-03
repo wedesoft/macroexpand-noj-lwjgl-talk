@@ -188,21 +188,7 @@
   \pdfbookmark[1]{Dependencies}{plainwindowdeps}
   \pdfbookmark[2]{deps.edn}{depsedn}
   \frametitle{deps.edn}
-  \begin{minted}[]{clj}
-;; Replace linux with windows or macos as appropriate:
-{:deps {org.clojure/clojure {:mvn/version "1.12.2"}
-        generateme/fastmath {:mvn/version "2.4.0"
-          :exclusions [com.github.haifengl/smile-mkl org.bytedeco/openblas]}
-        org.lwjgl/lwjgl {:mvn/version "3.3.6"}
-        org.lwjgl/lwjgl$natives-linux {:mvn/version "3.3.6"}
-        org.lwjgl/lwjgl-opengl {:mvn/version "3.3.6"}
-        org.lwjgl/lwjgl-opengl$natives-linux {:mvn/version "3.3.6"}
-        org.lwjgl/lwjgl-glfw {:mvn/version "3.3.6"}
-        org.lwjgl/lwjgl-glfw$natives-linux {:mvn/version "3.3.6"}
-        org.lwjgl/lwjgl-stb {:mvn/version "3.3.6"}
-        org.lwjgl/lwjgl-stb$natives-linux {:mvn/version "3.3.6"}}
- :paths ["."]}
-  \end{minted}
+  \include{deps.tex}
 \end{frame}
 
 \begin{frame}[fragile]
