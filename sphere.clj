@@ -249,6 +249,8 @@ void main()
 (GL11/glEnable GL11/GL_CULL_FACE)
 (GL11/glCullFace GL11/GL_BACK)
 
+; (GL11/glPolygonMode GL11/GL_FRONT_AND_BACK GL11/GL_LINE)
+
 (while (not (GLFW/glfwWindowShouldClose window))
        (when @mouse-button
          (GL20/glUniform2f (GL20/glGetUniformLocation program "iMouse") (@mouse-pos 0) (@mouse-pos 1)))
