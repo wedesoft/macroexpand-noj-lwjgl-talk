@@ -5,8 +5,6 @@
         org.lwjgl/lwjgl-opengl {:mvn/version "3.3.6"}
         org.lwjgl/lwjgl-opengl$natives-linux {:mvn/version "3.3.6"}
         org.lwjgl/lwjgl-glfw {:mvn/version "3.3.6"}
-        org.lwjgl/lwjgl-glfw$natives-linux {:mvn/version "3.3.6"}
-        org.lwjgl/lwjgl-stb {:mvn/version "3.3.6"}
-        org.lwjgl/lwjgl-stb$natives-linux {:mvn/version "3.3.6"}}
+        org.lwjgl/lwjgl-glfw$natives-linux {:mvn/version "3.3.6"}}
  :paths ["."]}
 

@@ -240,7 +240,7 @@ void main()
 
 (GL20/glUseProgram program)
 (GL20/glUniform2f (GL20/glGetUniformLocation program "iResolution") window-width window-height)
-(GL20/glUniform1f (GL20/glGetUniformLocation program "fov") (to-radians 35.0))
+(GL20/glUniform1f (GL20/glGetUniformLocation program "fov") (to-radians 25.0))
 (GL20/glUniform1f (GL20/glGetUniformLocation program "distance") (* radius 10.0))
 (GL20/glUniform1i (GL20/glGetUniformLocation program "moon") 0)
 (GL13/glActiveTexture GL13/GL_TEXTURE0)
