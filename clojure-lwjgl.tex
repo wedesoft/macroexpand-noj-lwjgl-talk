@@ -1061,8 +1061,8 @@ void main()
 {
   mat3 horizon = oriented_matrix(normalize(vpoint));
   vec3 normal = normal(horizon, vpoint);
-  float phong = ambient + diffuse * max(0.0, dot(light, normal));
-  fragColor = vec4(color(uv(vpoint)) * phong, 1);
+  float brightness = ambient + diffuse * max(0.0, dot(light, normal));
+  fragColor = vec4(color(uv(vpoint)) * brightness, 1);
 }
   \end{minted}
 \end{frame}
