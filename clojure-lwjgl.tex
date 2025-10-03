@@ -812,8 +812,7 @@ void main()
 
 \begin{frame}[fragile]
   \frametitle{Sphere {-} Vertices and Indices 2/4}
-  \begin{minipage}[b]{0.75\textwidth}
-    \begin{minted}[]{clj}
+  \begin{minted}[]{clj}
 (def radius 1737.4)
 
 (def corners
@@ -827,11 +826,11 @@ void main()
 (def v-vectors
   (map (fn [[i _ _ l]] (sub (nth points l) (nth points i)))
        quads))
-    \end{minted}
-  \end{minipage}
-  \begin{minipage}[b]{0.23\textwidth}
-    \includegraphics[width=\textwidth]{cuv}
-  \end{minipage}
+  \end{minted}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=-5mm,yshift=-5mm,anchor=north east] at (current page.north east){%
+      \includegraphics[width=.3\textwidth]{cuv}};
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -853,6 +852,10 @@ void main()
           (+ offset (inc n) 1)
           (+ offset (inc n))])))
   \end{minted}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=-5mm,yshift=-5mm,anchor=north east] at (current page.north east){%
+      \includegraphics[width=.3\textwidth]{division}};
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile]
