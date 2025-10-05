@@ -1,6 +1,8 @@
 # Computer Graphics with Clojure, LWJGL, and Fastmath
 
-*Upcoming talk at Macroexpand-Noj, October 17-18, 2025*
+*Upcoming talk at Macroexpand-Noj October 17th-18th, 2025
+
+*Time slot: October 18th, 14:00-15:00 BST/London*
 
 ## Abstract
 sfsim is a space flight simulator under development.
@@ -21,3 +23,4 @@ In his spare time he got interested in Ruby, GNU Guile, and finally Clojure.
 * [Clojure Civitas - OpenGL Visualization with LWJGL](https://clojurecivitas.github.io/opengl_visualization/main.html)
 * [Interactive Moon viewer](https://github.com/wedesoft/macroexpand-noj-lwjgl)
 * [sfsim space flight simulator](https://wedesoft.github.io/sfsim/)
+* [Macroexpand-Noj](https://scicloj.github.io/macroexpand-2025/macroexpand_noj.html)
