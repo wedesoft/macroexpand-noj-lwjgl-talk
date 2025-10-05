@@ -485,6 +485,7 @@ void main()
   \pdfbookmark[2]{Load Image}{textureload}
   \frametitle{Texture {-} Load Image}
   \begin{minted}[]{clj}
+;; NASA CGI Moon Kit https://svs.gsfc.nasa.gov/4720/
 (def color (ImageIO/read (io/file "lroc_color_poles_2k.tif")))
 (def color-raster (.getRaster color))
 (def color-width (.getWidth color-raster))
@@ -903,6 +904,7 @@ void main()
   \pdfbookmark[2]{Load Elevation Data}{elevationload}
   \frametitle{Moon {-} Load Elevation Data}
   \begin{minted}[]{clj}
+;; NASA CGI Moon Kit https://svs.gsfc.nasa.gov/4720/
 (def ldem (ImageIO/read (io/file "ldem_4.tif")))
 (def ldem-raster (.getRaster ldem))
 (def ldem-width (.getWidth ldem))
