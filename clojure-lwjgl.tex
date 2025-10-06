@@ -635,8 +635,8 @@ void main()
 \end{frame}
 
 \begin{frame}[fragile]
-  \pdfbookmark[2]{Map Texture onto Sphere}{cubemap}
-  \frametitle{Cube {-} Map Texture onto Sphere}
+  \pdfbookmark[2]{Spherical Texture Mapping}{cubemap}
+  \frametitle{Cube {-} Spherical Texture Mapping}
   \begin{minted}[]{glsl}
 #version 130
 
@@ -979,8 +979,8 @@ float elevation(vec3 p)
 \end{frame}
 
 \begin{frame}[fragile]
-  \pdfbookmark[2]{Normal Vector}{moonnormal}
-  \frametitle{Moon {-} Normal Vector}
+  \pdfbookmark[2]{Perturbed Normal Vector}{moonnormal}
+  \frametitle{Moon {-} Perturbed Normal Vector}
   \begin{minted}[]{glsl}
 #version 130
 
@@ -1083,12 +1083,13 @@ void main()
   \frametitle{In Practice}
   Note that in practice you will
   \begin{itemize}
-    \item use higher resolution data and map the data onto texture tiles
-    \item generate textures containing normal maps offline
-    \item create a multiresolution map
-    \item use tessellation to increase the mesh resolution
+    \item use high resolution data
+    \item multiple tiles
+    \item multiresolution map
+    \item precomputed normal maps
+    \item tessellation shaders to increase mesh resolution
     \item use elevation data to deform the mesh
-    \item load map tiles in the background using futures
+    \item load map tiles in the background using \emph{Clojure futures}
   \end{itemize}
 \end{frame}
 
