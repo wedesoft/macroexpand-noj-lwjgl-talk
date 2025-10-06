@@ -75,11 +75,12 @@ void main()
 #version 130
 
 #define PI 3.1415926535897932384626433832795
-
 vec2 uv(vec3 p)
 {
-  float u = atan(p.x, -p.z) / (2.0 * PI) + 0.5;
-  float v = 0.5 - atan(p.y, length(p.xz)) / PI;
+  float lon = atan(p.x, -p.z);
+  float lat = atan(p.y, length(p.xz));
+  float u = lon / (2.0 * PI) + 0.5;
+  float v = 0.5 + lat / PI;
   return vec2(u, v);
 }")
 
@@ -117,7 +118,7 @@ uniform sampler2D moon;
 
 vec3 color(vec2 uv)
 {
-  return texture(moon, uv).rgb;
+  return texture(moon, vec2(uv.x, 1.0 - uv.y)).rgb;
 }")
 
 (def elevation-source "
@@ -129,7 +130,8 @@ vec2 uv(vec3 p);
 
 float elevation(vec3 p)
 {
-  return texture(ldem, uv(p)).r;
+  vec2 uv = uv(p);
+  return texture(ldem, vec2(uv.x, 1.0 - uv.y)).r;
 }")
 
 (def normal-source "

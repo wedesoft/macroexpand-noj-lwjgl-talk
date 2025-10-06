@@ -33,7 +33,7 @@ uniform sampler2D moon;
 
 vec3 color(vec2 uv)
 {
-  return texture(moon, uv).rgb;
+  return texture(moon, vec2(uv.x, 1.0 - uv.y)).rgb;
 }")
 
 (def fragment-source "
@@ -116,6 +116,7 @@ void main()
 (def color-width (.getWidth color-raster))
 (def color-height (.getHeight color-raster))
 (def color-channels (.getNumBands color-raster))
+(assert (= color-channels 3))
 (def color-pixels (int-array (* color-width color-height color-channels)))
 (.getPixels color-raster 0 0 color-width color-height color-pixels)
 
