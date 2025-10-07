@@ -471,6 +471,7 @@ void main()
 (def color-height (.getHeight color-raster))
 (def color-channels (.getNumBands color-raster))
 (assert (= color-channels 3))
+;; reading bytes into int-array for brevity here
 (def color-pixels (int-array (* color-width color-height color-channels)))
 (.getPixels color-raster 0 0 color-width color-height color-pixels)
   \end{minted}
