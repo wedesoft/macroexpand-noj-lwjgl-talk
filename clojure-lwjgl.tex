@@ -617,7 +617,7 @@ void main()
   \begin{minted}[]{glsl}
 #version 130
 #define M_PI 3.1415926535897932384626433832795
-uniform float fov;
+uniform float fov;  // field of view
 uniform float distance;
 uniform vec2 iResolution;
 uniform vec2 iMouse;
@@ -643,7 +643,7 @@ void main()
                     vec3(0, cos(beta), -sin(beta)),
                     vec3(0, sin(beta), cos(beta)));
   vec3 p = rot_x * rot_y * point + vec3(0, 0, distance);
-  float f = 1.0 / tan(fov / 2.0);
+  float f = 1.0 / tan(fov / 2.0);  // focal length
   float aspect = iResolution.x / iResolution.y;
   float proj_x = p.x / p.z * f;
   float proj_y = p.y / p.z * f * aspect;
