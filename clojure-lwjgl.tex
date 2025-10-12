@@ -484,6 +484,7 @@ void main()
   \frametitle{Texture {-} Load Image}
   \begin{minted}[]{clj}
 ;; NASA CGI Moon Kit https://svs.gsfc.nasa.gov/4720/
+;; Lunar Reconnaissance Orbiter Camera (LROC)
 (def color (ImageIO/read (io/file "lroc_color_poles_2k.tif")))
 (def color-raster (.getRaster color))
 (def color-width (.getWidth color-raster))
@@ -907,6 +908,7 @@ void main()
   \frametitle{Moon {-} Load Elevation Data}
   \begin{minted}[]{clj}
 ;; NASA CGI Moon Kit https://svs.gsfc.nasa.gov/4720/
+;; Lunar Digital Elevation Model (LDEM)
 (def ldem (ImageIO/read (io/file "ldem_4.tif")))
 (def ldem-raster (.getRaster ldem))
 (def ldem-width (.getWidth ldem))
