@@ -600,19 +600,18 @@ void main()
 (def mouse-pos (atom [0.0 0.0]))
 (def mouse-button (atom false))
 
+;; Callbacks invoked by (GLFW/glfwPollEvents)
 (GLFW/glfwSetCursorPosCallback
   window
   (reify GLFWCursorPosCallbackI
-    (invoke
-      [_this _window xpos ypos]
-      (reset! mouse-pos [xpos ypos]))))
+    (invoke [_this _window xpos ypos]
+            (reset! mouse-pos [xpos ypos]))))
 
 (GLFW/glfwSetMouseButtonCallback
   window
   (reify GLFWMouseButtonCallbackI
-    (invoke
-      [_this _window _button action _mods]
-      (reset! mouse-button (= action GLFW/GLFW_PRESS)))))
+    (invoke [_this _window _button action _mods]
+            (reset! mouse-button (= action GLFW/GLFW_PRESS)))))
   \end{minted}
 \end{frame}
 
