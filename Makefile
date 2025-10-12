@@ -2,7 +2,7 @@
 
 SVGS = $(wildcard *.svg)
 
-IMAGES = $(wildcard *.png) $(wildcard *.jpg) $(SVGS:.svg=.pdf)
+IMAGES = $(wildcard *.png) $(wildcard *.jpg) $(SVGS:.svg=.jpg)
 
 all: clojure-lwjgl.pdf lroc_color_poles_2k.tif ldem_4.tif
 
@@ -19,5 +19,8 @@ ldem_4.tif:
 clean:
 	rm -Rf clojure-lwjgl.pdf _minted-clojure-lwjgl *.aux *.log *.out *.nav *.snm *.toc *.vrb
 
-.svg.pdf:
-	rsvg-convert -f pdf -o $@ $<
+.svg.png:
+	rsvg-convert -f png -h 1080 $< -o $@
+
+.png.jpg:
+	convert $< -quality 90 $@
