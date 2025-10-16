@@ -4,6 +4,7 @@
 \usepackage{multirow}
 \usepackage{transparent}
 \usepackage{tikz}
+\usepackage{pgf-pie}
 \usepackage{minted}
 
 \title{Computer Graphics with Clojure, LWJGL, and Fastmath}
@@ -166,11 +167,25 @@
 \end{frame}
 
 \begin{frame}
+  \pdfbookmark[1]{Code}{code}
+  \frametitle{Code}
+  %   611    2.01 astronomy
+  %  1238    4.07 UI
+  %  2178    7.16 physics
+  %  2416    7.95 core
+  %  5065   16.7  shaders
+  %  6473   21.3  graphics
+  % 12417   40.8  tests
+  \begin{tikzpicture}
+    \pie[text=legend, radius=3]{2.01/astronomy, 4.07/interface, 7.16/physics, 7.95/core, 16.7/shaders, 21.3/graphics, 40.8/tests}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}
   \pdfbookmark[1]{OpenGL Superbible}{superbible}
   \frametitle{OpenGL Superbible}
   \begin{center}
-    \includegraphics[width=.35\textwidth]{superbible}\\
-    \url{https://tinyurl.com/superbible}
+    \includegraphics[width=.8\textwidth]{superbible}
   \end{center}
 \end{frame}
 
