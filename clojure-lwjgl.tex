@@ -182,7 +182,15 @@
   %  6473   21.3  graphics
   % 12417   40.8  tests
   \begin{tikzpicture}
-    \pie[text=legend, radius=3]{2.01/astronomy, 4.07/interface, 7.16/physics, 7.95/core, 16.7/shaders, 21.3/graphics, 40.8/tests}
+    \pie[text=legend, radius=3]{
+      40.8/tests (Midje),
+      21.3/graphics (LWJGL),
+      16.7/shaders (OpenGL),
+      7.95/core,
+      7.16/physics (Jolt),
+      4.07/interface (Nuklear),
+      2.01/astronomy (Skyfield)
+    }
   \end{tikzpicture}
 \end{frame}
 
