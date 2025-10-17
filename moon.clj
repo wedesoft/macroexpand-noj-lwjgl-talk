@@ -155,8 +155,8 @@ vec3 normal(mat3 horizon, vec3 p)
 (def fragment-source "
 #version 130
 
-uniform float ambient;
-uniform float diffuse;
+#define AMBIENT 0.1
+#define DIFFUSE 0.9
 uniform vec3 light;
 
 in vec3 vpoint;
@@ -171,7 +171,7 @@ void main()
 {
   mat3 horizon = oriented_matrix(normalize(vpoint));
   vec3 normal = normal(horizon, vpoint);
-  float brightness = ambient + diffuse * max(0.0, dot(light, normal));
+  float brightness = AMBIENT + DIFFUSE * max(0.0, dot(light, normal));
   fragColor = vec4(color(uv(vpoint)) * brightness, 1);
 }")
 
@@ -333,8 +333,6 @@ void main()
 (GL20/glUniform1f (GL20/glGetUniformLocation program "fov") (to-radians 20.0))
 (GL20/glUniform1f (GL20/glGetUniformLocation program "distance") (* radius 12.0))
 (GL20/glUniform1f (GL20/glGetUniformLocation program "resolution") resolution)
-(GL20/glUniform1f (GL20/glGetUniformLocation program "ambient") 0.1)
-(GL20/glUniform1f (GL20/glGetUniformLocation program "diffuse") 0.9)
 (GL20/glUniform3f (GL20/glGetUniformLocation program "light")
                   (light 0) (light 1) (light 2))
 (GL20/glUniform1i (GL20/glGetUniformLocation program "moon") 0)

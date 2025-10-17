@@ -66,9 +66,6 @@
   \pdfbookmark[1]{Title}{title}
   \begin{center}
   \titlepage{}
-  \begin{footnotesize}
-    \url{https://clojurecivitas.github.io/opengl_visualization/main.html}
-  \end{footnotesize}
   \end{center}
 \end{frame}
 
@@ -1017,43 +1014,6 @@ mat3 oriented_matrix(vec3 n)
 \end{frame}
 
 \begin{frame}[fragile]
-  \pdfbookmark[2]{TDD with OpenGL}{moontdd}
-  \frametitle{Moon {-} TDD with OpenGL 1/2}
-  \begin{minted}[]{clj}
-(def orthogonal-probe
-  (template/fn [x y z]
-    "#version 410 core
-out vec3 fragColor;
-vec3 orthogonal_vector(vec3 n);
-void main()
-{
-  fragColor = orthogonal_vector(vec3(<%= x %>, <%= y %>, <%= z %>));
-}"))
-
-(def orthogonal-test
-    (shader-test (fn [_program]) orthogonal-probe orthogonal-vector))
-  \end{minted}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Moon {-} TDD with OpenGL 2/2}
-  \begin{minted}[]{clj}
-(tabular "Shader for generating an orthogonal vector"
-         (fact (orthogonal-test [] [?x ?y ?z])
-               => (roughly-vector (vec3 ?rx ?ry ?rz) 1e-6))
-         ?x  ?y  ?z ?rx  ?ry  ?rz
-         1   0   0  0    0    1
-         2   0   0  0    0    1
-         0   1   0  0    0   -1
-         0   2   0  0    0   -1
-         0   0   1  0    1    0
-         0   0   2  0    1    0
-         0.6 0.8 0  0.8 -0.6  0
-         3   4   0  0.8 -0.6  0)
-  \end{minted}
-\end{frame}
-
-\begin{frame}[fragile]
   \pdfbookmark[2]{Elevation Lookup}{moonelevation}
   \frametitle{Moon {-} Elevation Lookup}
   \begin{minted}[highlightlines={9-10}]{glsl}
@@ -1104,8 +1064,9 @@ vec3 normal(mat3 horizon, vec3 p)
   \begin{minted}[]{glsl}
 #version 130
 
-uniform float ambient;
-uniform float diffuse;
+#define AMBIENT 0.1
+#define DIFFUSE 0.9
+
 uniform vec3 light;
 
 in vec3 vpoint;
@@ -1129,7 +1090,7 @@ void main()
 {
   mat3 horizon = oriented_matrix(normalize(vpoint));
   vec3 normal = normal(horizon, vpoint);
-  float brightness = ambient + diffuse * max(0.0, dot(light, normal));
+  float brightness = AMBIENT + DIFFUSE * max(0.0, dot(light, normal));
   fragColor = vec4(color(uv(vpoint)) * brightness, 1);
 }
   \end{minted}
@@ -1144,8 +1105,6 @@ void main()
 ;; ...
 (GL20/glUniform1f (GL20/glGetUniformLocation program "resolution")
                   resolution)
-(GL20/glUniform1f (GL20/glGetUniformLocation program "ambient") 0.1)
-(GL20/glUniform1f (GL20/glGetUniformLocation program "diffuse") 0.9)
 (GL20/glUniform3f (GL20/glGetUniformLocation program "light")
                   (light 0) (light 1) (light 2))
 (GL20/glUniform1i (GL20/glGetUniformLocation program "ldem") 1)
@@ -1237,5 +1196,43 @@ void main()
     \href{https://store.steampowered.com/app/3687560/sfsim/}{\includegraphics[width=.6\textwidth]{wishlist}}
   \end{center}
 \end{frame}
+P
+\begin{frame}[fragile]
+  \pdfbookmark[1]{TDD with OpenGL}{tdd}
+  \frametitle{TDD with OpenGL 1/2}
+  \begin{minted}[]{clj}
+(def orthogonal-probe
+  (template/fn [x y z]
+    "#version 410 core
+out vec3 fragColor;
+vec3 orthogonal_vector(vec3 n);
+void main()
+{
+  fragColor = orthogonal_vector(vec3(<%= x %>, <%= y %>, <%= z %>));
+}"))
+
+(def orthogonal-test
+    (shader-test (fn [_program]) orthogonal-probe orthogonal-vector))
+  \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{TDD with OpenGL 2/2}
+  \begin{minted}[]{clj}
+(tabular "Shader for generating an orthogonal vector"
+         (fact (orthogonal-test [] [?x ?y ?z])
+               => (roughly-vector (vec3 ?rx ?ry ?rz) 1e-6))
+         ?x  ?y  ?z ?rx  ?ry  ?rz
+         1   0   0  0    0    1
+         2   0   0  0    0    1
+         0   1   0  0    0   -1
+         0   2   0  0    0   -1
+         0   0   1  0    1    0
+         0   0   2  0    1    0
+         0.6 0.8 0  0.8 -0.6  0
+         3   4   0  0.8 -0.6  0)
+  \end{minted}
+\end{frame}
+
 
 \end{document}
