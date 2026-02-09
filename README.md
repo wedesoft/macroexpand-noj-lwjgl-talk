@@ -1,6 +1,6 @@
 # Computer Graphics with Clojure, LWJGL, and Fastmath
 
-Talk at Macroexpand-Noj October 17th-18th, 2025
+Talk at [Macroexpand-Noj](https://scicloj.github.io/macroexpand-2025/macroexpand_noj.html) October 17th-18th, 2025
 
 *Time slot: October 18th, 14:00-15:00 BST/London*
 
